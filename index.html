@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>EatWise — Good food, less waste</title>
+
+    <link rel="stylesheet" href="Popup/modal.css">
+    <style>
+        :root {
+            --g: #18342b;
+            --c: #f7f3e9;
+            --l: #dff36b
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--c);
+            color: var(--g);
+            font-family: Arial, sans-serif;
+            overflow-x: hidden
+        }
+
+        nav {
+            /* Твоят оригинален дизайн */
+            position: fixed;
+            z-index: 1000;
+            /* Увеличено, за да сме сигурни, че винаги е най-отгоре */
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 1100px;
+            padding: 14px 20px;
+            border-radius: 40px;
+            background: #ffffffcc;
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            /* Добавено: Плавна анимация при скрол */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Ако искаш и линковете да са подредени хубаво в средата, запази това: */
+        nav .links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        /* Обновеният клас за скриване */
+        .nav-hidden {
+            /* ЗАДЪЛЖИТЕЛНО: Запазваме центрирането (-50% по X) и избутваме нагоре (-150% по Y) */
+            transform: translate(-50%, -150%);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900
+        }
+
+        .logo span {
+            color: #7b9e00
+        }
+
+        nav a {
+            margin-left: 18px;
+            color: var(--g);
+            text-decoration: none;
+            font-weight: 700
+        }
+
+        nav .links a:hover {
+            text-decoration: underline
+        }
+
+        a:focus-visible {
+            outline: 3px solid var(--g);
+            outline-offset: 3px
+        }
+
+        .pill {
+            background: var(--g);
+            color: white !important;
+            padding: 11px 18px;
+            border-radius: 30px
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 130px max(24px, calc((100% - 1100px)/2))
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 40px
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            font-size: 12px;
+            font-weight: 900;
+            opacity: .65
+        }
+
+        h1 {
+            font-size: clamp(60px, 8vw, 110px);
+            line-height: .86;
+            letter-spacing: -.07em;
+            margin: 15px 0 25px
+        }
+
+        .lead {
+            font-size: 20px;
+            line-height: 1.5;
+            max-width: 580px
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 20px 8px 0 0;
+            padding: 15px 21px;
+            border-radius: 30px;
+            background: var(--g);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 800
+        }
+
+        .btn.alt {
+            background: var(--l);
+            color: var(--g)
+        }
+
+        .scene {
+            height: 500px;
+            display: grid;
+            place-items: center;
+            position: relative
+        }
+
+        .blob {
+            position: absolute;
+            width: 390px;
+            height: 390px;
+            border-radius: 50%;
+            background: var(--l);
+            transform: rotate(-8deg)
+        }
+
+        .bag {
+            z-index: 1;
+            background: white;
+            width: 220px;
+            height: 245px;
+            border-radius: 28px 28px 40px 40px;
+            display: grid;
+            place-items: center;
+            font-size: 70px;
+            box-shadow: 0 25px 60px #18342b22;
+            animation: f 4s ease-in-out infinite
+        }
+
+        .orbit {
+            position: absolute;
+            font-size: 42px;
+            animation: f 3s ease-in-out infinite
+        }
+
+        .a {
+            top: 80px;
+            right: 35px
+        }
+
+        .b {
+            bottom: 80px;
+            left: 35px
+        }
+
+        .c {
+            top: 190px;
+            left: 10px
+        }
+
+        @keyframes f {
+            50% {
+                transform: translateY(-16px)
+            }
+        }
+
+        .dark {
+            background: var(--g);
+            color: #fff
+        }
+
+        .big {
+            font-size: clamp(45px, 6vw, 80px);
+            line-height: .93;
+            letter-spacing: -.06em;
+            margin: 15px 0 45px
+        }
+
+        .steps,
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px
+        }
+
+        .step {
+            border: 1px solid #fff3;
+            padding: 28px;
+            border-radius: 28px;
+            min-height: 220px
+        }
+
+        .num {
+            font-size: 48px;
+            color: var(--l);
+            font-weight: 900
+        }
+
+        .step h3 {
+            font-size: 24px
+        }
+
+        .muted {
+            color: #cbd7cf;
+            line-height: 1.5
+        }
+
+        .vscroll {
+            height: 250vh;
+            position: relative;
+            background: #eee7d8
+        }
+
+        .vscroll__pin {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center
+        }
+
+        .vscroll__track {
+            display: flex;
+            flex-direction: column;
+            gap: 26px;
+            width: 100%;
+            padding: 0 max(24px, calc((100% - 1100px)/2))
+        }
+
+        .card {
+            width: 100%;
+            max-width: 620px;
+            background: #fff;
+            border-radius: 35px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 20px 50px #18342b12;
+            color: inherit;
+            text-decoration: none
+        }
+
+        .food {
+            font-size: 80px
+        }
+
+        .price {
+            font-size: 30px;
+            font-weight: 900
+        }
+
+        .tag {
+            background: var(--l);
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 900
+        }
+
+        .stats {
+            grid-template-columns: repeat(3, 1fr)
+        }
+
+        .stat {
+            background: white;
+            border-radius: 30px;
+            padding: 32px
+        }
+
+        .stat strong {
+            font-size: 55px;
+            display: block
+        }
+
+        .business {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center
+        }
+
+        .node {
+            background: #fff;
+            color: var(--g);
+            padding: 18px;
+            border-radius: 20px;
+            margin: 8px;
+            font-weight: 800;
+            display: inline-block
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: .8s;
+            transition-delay: var(--d, 0s)
+        }
+
+        .on {
+            opacity: 1;
+            transform: none
+        }
+
+        /* --- Why EatWise --- */
+        .why {
+            text-align: center
+        }
+
+        .why .pre {
+            font-size: 22px;
+            font-weight: 700;
+            opacity: .7
+        }
+
+        .why h2 {
+            font-size: clamp(42px, 6vw, 78px);
+            letter-spacing: -.06em;
+            line-height: .95;
+            margin: 6px 0 70px;
+            text-transform: uppercase
+        }
+
+        .why__grid {
+            display: grid;
+            grid-template-columns: 1fr minmax(260px, 420px) 1fr;
+            align-items: center;
+            gap: 40px
+        }
+
+        .why__col {
+            display: flex;
+            flex-direction: column;
+            gap: 80px
+        }
+
+        .why__col--l {
+            align-items: flex-end;
+            text-align: right
+        }
+
+        .why__col--r {
+            align-items: flex-start;
+            text-align: left
+        }
+
+        .why__item {
+            max-width: 270px
+        }
+
+        .why__icon {
+            width: 54px;
+            height: 54px;
+            color: #7b9e00;
+            display: block
+        }
+
+        .why__col--l .why__icon {
+            margin-left: auto
+        }
+
+        .why__item h3 {
+            font-size: 21px;
+            line-height: 1.25;
+            font-weight: 800;
+            margin: 14px 0 0
+        }
+
+        .why__bag {
+            width: 100%;
+            height: auto
+        }
+
+        @media(max-width:900px) {
+            .why__grid {
+                grid-template-columns: 1fr;
+                gap: 44px
+            }
+
+            .why__col {
+                gap: 44px
+            }
+
+            .why__col--l,
+            .why__col--r {
+                align-items: center;
+                text-align: center
+            }
+
+            .why__col--l .why__icon {
+                margin: 0 auto
+            }
+
+            .why__col--r .why__icon {
+                margin: 0 auto
+            }
+
+            .why__bag {
+                max-width: 320px;
+                margin: 0 auto
+            }
+
+            .why__grid>.why__col--r {
+                order: 3
+            }
+        }
+
+        /* --- Parallax image --- */
+        .parallax {
+            background-attachment: fixed;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 500px;
+            width: 100%;
+            position: relative
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .parallax {
+                background-attachment: scroll
+            }
+        }
+
+        @media(min-width:768px) {
+            .parallax {
+                height: 540px
+            }
+        }
+
+        @media(min-width:1200px) {
+            .parallax {
+                height: 640px
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .parallax {
+                background-attachment: scroll
+            }
+        }
+
+        .search-wrap {
+            position: relative;
+            margin-top: 24px;
+            max-width: 560px
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #fff;
+            border: 2px solid transparent;
+            border-radius: 18px;
+            padding: 6px 8px 6px 16px;
+            box-shadow: 0 14px 35px #18342b14;
+            transition: .25s
+        }
+
+        .search-box:focus-within {
+            border-color: var(--g);
+            box-shadow: 0 18px 45px #18342b20
+        }
+
+        .search-icon {
+            width: 22px;
+            height: 22px;
+            flex: none
+        }
+
+        .city-input {
+            width: 100%;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            font-size: 17px;
+            color: var(--g);
+            padding: 12px 0
+        }
+
+        .search-btn {
+            border: 0;
+            background: var(--g);
+            color: #fff;
+            border-radius: 13px;
+            padding: 12px 16px;
+            font-weight: 800;
+            cursor: pointer
+        }
+
+        /* 1. Главният контейнер на формата трябва да е relative,
+   за да може падащото меню да се позиционира спрямо него */
+        .search-wrap {
+            position: relative;
+            /* Другите ти стилове за формата остават тук */
+        }
+
+        /* 2. Самият падащ списък */
+        .results {
+            position: absolute;
+            top: 100%;
+            /* Появява се точно под полето за търсене */
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            /* Прави хубава сянка */
+            max-height: 250px;
+            /* Ограничава височината */
+            overflow-y: auto;
+            /* Добавя скрол, ако градовете са много */
+            z-index: 1000;
+            /* Гарантира, че е над останалите елементи в сайта */
+            margin-top: 8px;
+
+            /* Скрит по подразбиране, ако няма съдържание */
+            display: none;
+        }
+
+        /* Когато има резултати в него, го показваме (JavaScript-ът ще добави съдържанието) */
+        .results:not(:empty) {
+            display: block;
+        }
+
+        /* 3. Стил за всеки отделен ред (град) от списъка */
+        .result-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s, color 0.2s;
+            text-align: left;
+        }
+
+        /* Премахва чертата на последния елемент */
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Ефект при посочване с мишката */
+        .result-item:hover {
+            background-color: #f8fafc;
+            color: #4ade80;
+            /* Зеленият цвят на EatWise */
+        }
+
+        /* Удебеляване на буквите, които съвпадат с търсенето */
+        .result-item strong {
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .hint {
+            font-size: 12px;
+            opacity: .55;
+            margin: 9px 2px 0
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 20px 8px 0 0;
+            padding: 15px 21px;
+            border-radius: 30px;
+            background: var(--g);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 800
+        }
+
+        .btn.alt {
+            background: var(--l);
+            color: var(--g)
+        }
+
+        .footer-topbar-section {
+            padding: 20px max(10px, calc((100% - 1100px)/2)) 0
+        }
+
+        .footer-topbar-section .eatwise-footer__topbar {
+            border-bottom: 1px solid #ffffff26;
+            margin-bottom: 0;
+            padding-bottom: 50px
+        }
+
+
+        .eatwise-footer-section {
+            background: #1a1a2e;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            /* Форсираме премахването на външния padding */
+            min-height: auto;
+            /* Премахваме евентуална минимална височина */
+        }
+
+        /* ===== Footer Topbar ===== */
+        .eatwise-footer__topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+
+            /* ПРОМЯНАТА Е ТУК: Намаляваме от 32px на 16px (или 12px, 20px според вкуса ти) */
+            padding: 20px 40px;
+
+            color: #ffffff;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        /* ===== Brand ===== */
+        .eatwise-footer__brand {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .eatwise-footer__brand span {
+            color: #4ade80;
+        }
+
+        /* ===== Social Icons ===== */
+        .eatwise-footer__social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .eatwise-footer__social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            color: #a1a1aa;
+            border-radius: 50%;
+            transition: color 0.2s, background 0.2s, transform 0.2s;
+        }
+
+        .eatwise-footer__social a:hover {
+            color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .eatwise-footer__social svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        /* ===== App Store Buttons ===== */
+        .eatwise-footer__stores {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .store-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: #16213e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.7rem;
+            line-height: 1.2;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .store-btn:hover {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.08);
+        }
+
+        .store-btn strong {
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        .store-btn svg {
+            flex-shrink: 0;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .eatwise-footer__topbar {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .eatwise-footer__social {
+                order: -1;
+            }
+
+            .eatwise-footer__stores {
+                justify-content: center;
+            }
+        }
+
+
+
+        .eatwise-footer {
+            position: relative;
+            bottom: 0;
+            z-index: 0;
+            height: 520px;
+            background: var(--g);
+            color: #fff;
+            overflow: hidden
+        }
+
+
+        .eatwise-footer__inner {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 90px max(24px, calc((100% - 1100px)/2)) 0
+        }
+
+        .eatwise-footer__top {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px
+        }
+
+        .eatwise-footer__eyebrow {
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            font-size: 12px;
+            font-weight: 900;
+            opacity: .55;
+            margin: 0 0 18px
+        }
+
+        .eatwise-footer__links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 15px
+        }
+
+        .eatwise-footer__link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            width: fit-content
+        }
+
+        .eatwise-footer__link:hover span {
+            text-decoration: underline
+        }
+
+        .eatwise-footer__bottom {
+            padding-bottom: 22px;
+            margin-left: min(-24px, calc((1100px - 100%)/2));
+            margin-right: min(-24px, calc((1100px - 100%)/2));
+            text-align: center;
+            overflow: hidden
+        }
+
+        .section-divider {
+            height: 100px;
+            background: white;
+            clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .eatwise-footer__wordmark {
+            font-size: clamp(80px, 15vw, 180px);
+            font-weight: 900;
+            letter-spacing: -.01em;
+            line-height: .82;
+            white-space: nowrap
+        }
+
+        .eatwise-footer__wordmark span {
+            color: var(--l)
+        }
+
+        /* line-mask reveal: overflow-hidden wrapper, inner span slides up into view */
+        .line-reveal {
+            display: block;
+            overflow: hidden
+        }
+
+        .line-reveal>span {
+            display: block;
+            transform: translateY(100%);
+            transition: transform .7s cubic-bezier(.2, .7, .2, 1)
+        }
+
+        .line-reveal.on>span {
+            transform: translateY(0)
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .page-wrap {
+                margin-bottom: 0
+            }
+
+            .eatwise-footer {
+                position: static;
+                height: auto;
+                padding-bottom: 40px
+            }
+
+            .line-reveal>span {
+                transform: none;
+                transition: none
+            }
+        }
+
+        @media(max-width:900px) {
+            .eatwise-footer__top {
+                grid-template-columns: 1fr 1fr;
+                row-gap: 40px
+            }
+
+            .eatwise-footer {
+                height: auto;
+                min-height: 620px
+            }
+
+            .eatwise-footer__inner {
+                padding-top: 70px
+            }
+        }
+
+        @media(max-width:560px) {
+            .eatwise-footer__top {
+                grid-template-columns: 1fr
+            }
+        }
+
+        @media(max-width:750px) {
+            nav .links {
+                display: none
+            }
+
+            .hero,
+            .business {
+                grid-template-columns: 1fr
+            }
+
+            .scene {
+                height: 380px
+            }
+
+            .blob {
+                width: 280px;
+                height: 280px
+            }
+
+            .bag {
+                width: 175px;
+                height: 200px
+            }
+
+            .steps,
+            .stats {
+                grid-template-columns: 1fr
+            }
+
+            .card {
+                width: 260px;
+                height: 360px
+            }
+        }
+
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            background-color: #4f46e5;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+            /* Първоначално е скрит */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Клас за показване при скрол */
+        #scrollToTopBtn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Ефекти при посочване */
+        #scrollToTopBtn:hover {
+            background-color: #4338ca;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav id="main-nav">
+        <a class="logo" href="index.html">Eat<span>Wise</span></a>
+        <div class="links">
+            <a href="#why">Защо EatWise</a>
+            <a href="#how">Как работи</a>
+            <a href="BussinesAuth/business-auth.html">За бизнеса</a>
+        </div>
+        <a class="pill" id="openDownloadModal" href="#">Свалете Приложението</a>
+    </nav>
+
+    <section class="hero">
+        <div class="reveal">
+            <div class="eyebrow">Добра храна. По-малко отпадъци. По-добри цени.</div>
+            <h1>Яж умно.<br>Спести повече.</h1>
+            <p class="lead">EatWise свързва хората с ресторанти, пекарни и магазини, в които в края на деня остава
+                вкусна храна – на цена, която ще ви хареса.</p>
+            <form id="cityForm" class="search-wrap" autocomplete="off">
+                <div class="search-box"><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <path d="m20 20-4-4"></path>
+                    </svg><input id="cityInput" class="city-input" placeholder="Намери храна наблизо"
+                        aria-label="Въведи град"><button class="search-btn" type="submit">Търси</button></div>
+                <div id="results" class="results"></div>
+            </form>
+            <a class="btn alt" href="BussinesAuth/business-auth.html">Стани Партньор</a>
+        </div>
+        <div class="scene reveal">
+            <div class="blob"></div>
+            <div class="bag">🥐</div>
+            <div class="orbit a">🍕</div>
+            <div class="orbit b">🥗</div>
+            <div class="orbit c">🍰</div>
+        </div>
+    </section>
+
+    <section id="why" class="why">
+        <p class="pre reveal">Защо да използваш</p>
+        <h2 class="reveal" style="--d:.08s">EatWise</h2>
+
+        <div class="why__grid">
+            <div class="why__col why__col--l">
+                <div class="why__item reveal" style="--d:.15s">
+                    <svg class="why__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M25 5H9a4 4 0 0 0-4 4v16l18 18 18-18z" />
+                        <circle cx="15" cy="15" r="2.6" />
+                        <path d="M21 33l12-12" />
+                    </svg>
+                    <h3>Пълна чиния, На половин цена</h3>
+                </div>
+                <div class="why__item reveal" style="--d:.3s">
+                    <svg class="why__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M24 42s14-11 14-21a14 14 0 0 0-28 0c0 10 14 21 14 21z" />
+                        <circle cx="24" cy="20" r="5" />
+                    </svg>
+                    <h3>Вкусна храна. Точно до теб.</h3>
+                </div>
+            </div>
+
+            <div class="why__bagwrap reveal" style="--d:.22s">
+                <svg class="why__bag" viewBox="0 0 320 300" aria-hidden="true">
+                    <ellipse cx="160" cy="262" rx="120" ry="16" fill="#18342b" opacity=".08" />
+                    <circle cx="160" cy="140" r="118" fill="#dff36b" />
+                    <path d="M92 118h136l-11 132a16 16 0 0 1-16 15h-82a16 16 0 0 1-16-15z" fill="#fff" />
+                    <path d="M92 118h136l-4 46H96z" fill="#f2f0e4" />
+                    <path d="M126 118V96a34 34 0 0 1 68 0v22" fill="none" stroke="#18342b" stroke-width="7"
+                        stroke-linecap="round" />
+                    <circle cx="132" cy="96" r="20" fill="#ff8a3d" />
+                    <circle cx="176" cy="88" r="24" fill="#e2483f" />
+                    <circle cx="206" cy="104" r="17" fill="#7b9e00" />
+                    <path d="M176 64c6-10 18-12 18-12s-2 12-12 16z" fill="#2f7d32" />
+                </svg>
+            </div>
+
+            <div class="why__col why__col--r">
+                <div class="why__item reveal" style="--d:.38s">
+                    <svg class="why__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M24 42S8 32 8 20a16 16 0 0 1 32 0c0 12-16 22-16 22z" opacity="0" />
+                        <path d="M40 8c0 16-8 26-22 28C10 37 8 26 12 18 17 8 29 7 40 8z" />
+                        <path d="M33 16C24 21 18 29 15 40" />
+                    </svg>
+                    <h3>Спаси храната. Намали отпадъка</h3>
+                </div>
+                <div class="why__item reveal" style="--d:.52s">
+                    <svg class="why__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M8 18h26v14a10 10 0 0 1-10 10h-6a10 10 0 0 1-10-10z" />
+                        <path d="M34 22h4a6 6 0 0 1 0 12h-4" />
+                        <path d="M15 11c0-2 2-3 2-5M23 11c0-2 2-3 2-5" />
+                    </svg>
+                    <h3>Подкрепете местните заведения</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="parallax" style="background-image:url('assets/give-food.jpg')"></div>
+
+    <section id="how" class="dark">
+        <div class="eyebrow">Как работи</div>
+        <div class="big">От излишък <br>до вечеря.</div>
+        <div class="steps">
+            <div class="step reveal">
+                <div class="num">01</div>
+                <h3>Свали Приложението</h3>
+                <p class="muted">Намери заведения</p>
+            </div>
+            <div class="step reveal">
+                <div class="num">02</div>
+                <h3>Резервирай</h3>
+                <p class="muted">Избери си храна за секунди</p>
+            </div>
+            <div class="step reveal">
+                <div class="num">03</div>
+                <h3>Вземи я</h3>
+                <p class="muted">Посети заведението и си вземи храната</p>
+            </div>
+            <div class="step reveal">
+                <div class="num">04</div>
+                <h3>Насладете се</h3>
+                <p class="muted">Супер храна за по-малко.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="impact-section">
+        <div class="eyebrow">Защо да опиташ</div>
+        <div class="big">Спестяваш и пари.</div>
+        <div class="stats">
+            <div class="stat reveal"><strong>1/3</strong>от храната в света се изхвърля</div>
+            <div class="stat reveal"><strong>до 70%</strong>отстъпка от редовната цена</div>
+            <div class="stat reveal"><strong>0%</strong>компромис с вкуса и качеството</div>
+        </div>
+    </section>
+
+    <section id="business" class="dark business">
+        <div>
+            <div class="eyebrow">За бизнеса</div>
+            <div class="big">Превърни излишната храна<br>в приходи.</div>
+            <p class="muted">Продавайте храна, която иначе би останала непродадена, достигайте до нови клиенти и
+                намалявайте отпадъците.</p>
+        </div>
+        <div>
+            <div class="node">🍽️ Твоят бизнес</div>→<div class="node">📦 EatWise чанта</div>→<div class="node">📱
+                Приложението</div>→<div class="node">😊 Клиент</div>
+        </div>
+    </section>
+
+    <section class="eatwise-footer-section">
+        <div class="eatwise-footer__topbar">
+            <div class="eatwise-footer__social">
+                <a href="#" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="3" y="3" width="18" height="18" rx="5" />
+                        <circle cx="12" cy="12" r="4" />
+                        <circle cx="17.2" cy="6.8" r="1" />
+                    </svg>
+                </a>
+                <a href="#" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M15 8h-2a3 3 0 0 0-3 3v10M8 13h6" />
+                        <path d="M20 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0z" />
+                    </svg>
+                </a>
+                <a href="#" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M14 4v9.5a3.5 3.5 0 1 1-3-3.46" />
+                        <path d="M14 4c.5 2.5 2.2 4 5 4" />
+                    </svg>
+                </a>
+                <a href="#" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="3" y="3" width="18" height="18" rx="3" />
+                        <circle cx="8" cy="8" r="1" />
+                        <path d="M8 11v6M12 17v-4a2 2 0 0 1 4 0v4M12 13v-.01" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="eatwise-footer__stores">
+                <a href="#" class="store-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path
+                            d="M17.05 12.5c-.03-2.06 1.68-3.05 1.76-3.1-.96-1.4-2.45-1.6-2.98-1.62-1.27-.13-2.48.75-3.13.75-.65 0-1.64-.73-2.7-.71-1.39.02-2.67.81-3.38 2.05-1.44 2.5-.37 6.2 1.04 8.23.68.99 1.5 2.11 2.58 2.07 1.03-.04 1.42-.67 2.67-.67 1.24 0 1.6.67 2.7.65 1.12-.02 1.83-1.02 2.51-2.02.79-1.16 1.12-2.29 1.13-2.35-.02-.01-2.17-.83-2.2-3.28z" />
+                        <path
+                            d="M15.13 6.15c.57-.7.96-1.66.85-2.63-.82.03-1.83.55-2.42 1.24-.53.61-.99 1.6-.87 2.53.92.07 1.86-.46 2.44-1.14z" />
+                    </svg>
+                    <span>Download on the<br><strong>App Store</strong></span>
+                </a>
+                <a href="#" class="store-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M4 3.5v17c0 .3.16.55.4.7l10-9.2-10-9.2c-.24.15-.4.4-.4.7z" />
+                        <path d="M16.8 12l2.9-1.68c.4-.23.4-.8 0-1.03L16.8 7.6l-2.55 2.35 2.55 2.35z" />
+                        <path d="M14.25 9.95L5.1 3.4 14.25 9.95z" />
+                        <path d="M14.25 14.05L5.1 20.6l9.15-6.55z" />
+                    </svg>
+                    <span>Get it on<br><strong>Google Play</strong></span>
+                </a>
+            </div>
+        </div>
+
+    </section>
+
+    <footer class="eatwise-footer" id="site-footer">
+        <div class="eatwise-footer__bottom">
+            <div class="eatwise-footer__wordmark" data-footer-parallax>Eat<span>Wise</span></div>
+        </div>
+        <div class="eatwise-footer__inner">
+            <div class="eatwise-footer__top">
+                <div class="eatwise-footer__col">
+                    <p class="eatwise-footer__eyebrow line-reveal"><span>Contact</span></p>
+                    <div class="eatwise-footer__links">
+                        <a class="eatwise-footer__link line-reveal"
+                            href="mailto:hello@eatwise.app"><span>hello@eatwise.app</span></a>
+                        <a class="eatwise-footer__link line-reveal" href="business/index.html"><span>Become a
+                                partner</span></a>
+                    </div>
+                </div>
+                <div class="eatwise-footer__col">
+                    <p class="eatwise-footer__eyebrow line-reveal"><span>Navigation</span></p>
+                    <div class="eatwise-footer__links">
+                        <a class="eatwise-footer__link line-reveal" href="index.html"><span>Home</span></a>
+                        <a class="eatwise-footer__link line-reveal" href="app/index.html"><span>Discover</span></a>
+                        <a class="eatwise-footer__link line-reveal" href="business/index.html"><span>For
+                                business</span></a>
+                        <a class="eatwise-footer__link line-reveal" href="login/index.html"><span>Log in</span></a>
+                    </div>
+                </div>
+                <div class="eatwise-footer__col">
+                    <p class="eatwise-footer__eyebrow line-reveal"><span>Studio</span></p>
+                    <div class="eatwise-footer__links">
+                        <span class="line-reveal"><span>Velingrad, BG</span></span>
+                        <span class="line-reveal"><span id="footerClock">--:-- </span></span>
+                    </div>
+                </div>
+                <div class="eatwise-footer__col">
+                    <p class="eatwise-footer__eyebrow line-reveal"><span>Legal</span></p>
+                    <div class="eatwise-footer__links">
+                        <span class="line-reveal"><span> 2026 EatWise</span></span>
+                        <a class="eatwise-footer__link line-reveal" href="#"><span>Terms of use</span></a>
+                        <a class="eatwise-footer__link line-reveal" href="#"><span>Privacy policy</span></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+
+    <!-- Popup HTML (Трябва да стои в HTML файла, за да го прочете браузърът) -->
+    <div id="downloadModal" class="download-modal-overlay">
+        <div class="download-modal-content">
+            <button id="closeDownloadModal" class="download-modal-close" aria-label="Затвори">&times;</button>
+            <h2 class="download-modal-title">Вземете EatWise с вас</h2>
+            <p class="download-modal-text">Изтеглете безплатното ни приложение и откривайте страхотна храна наблизо по
+                всяко време.</p>
+            <div class="download-modal-buttons">
+                <!-- App Store -->
+                <a href="#" class="store-bubble app-store">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path
+                            d="M17.05 12.5c-.03-2.06 1.68-3.05 1.76-3.1-.96-1.4-2.45-1.6-2.98-1.62-1.27-.13-2.48.75-3.13.75-.65 0-1.64-.73-2.7-.71-1.39.02-2.67.81-3.38 2.05-1.44 2.5-.37 6.2 1.04 8.23.68.99 1.5 2.11 2.58 2.07 1.03-.04 1.42-.67 2.67-.67 1.24 0 1.6.67 2.7.65 1.12-.02 1.83-1.02 2.51-2.02.79-1.16 1.12-2.29 1.13-2.35-.02-.01-2.17-.83-2.2-3.28z" />
+                        <path
+                            d="M15.13 6.15c.57-.7.96-1.66.85-2.63-.82.03-1.83.55-2.42 1.24-.53.61-.99 1.6-.87 2.53.92.07 1.86-.46 2.44-1.14z" />
+                    </svg>
+                    <span>App Store</span>
+                </a>
+                <!-- Google Play -->
+                <a href="#" class="store-bubble google-play">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path d="M4 3.5v17c0 .3.16.55.4.7l10-9.2-10-9.2c-.24.15-.4.4-.4.7z" />
+                        <path d="M16.8 12l2.9-1.68c.4-.23.4-.8 0-1.03L16.8 7.6l-2.55 2.35 2.55 2.35z" />
+                        <path d="M14.25 9.95L5.1 3.4 14.25 9.95z" />
+                        <path d="M14.25 14.05L5.1 20.6l9.15-6.55z" />
+                    </svg>
+                    <span>Google Play</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const io = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('on')), { threshold: .12 });
+        document.querySelectorAll('.reveal').forEach(x => io.observe(x));
+        const vh = document.querySelector('.vscroll'), vt = document.querySelector('.vscroll__track');
+        if (vh && vt) {
+            addEventListener('scroll', () => {
+                let r = vh.getBoundingClientRect(),
+                    p = Math.min(Math.max(-r.top / (vh.offsetHeight - innerHeight), 0), 1),
+                    m = vt.scrollHeight - innerHeight;
+                vt.style.transform = `translateY(${-m * p}px)`;
+            });
+        }
+
+        /* Footer: line-mask reveal for eyebrows/links */
+        const lio = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('on')), { threshold: .4 });
+        document.querySelectorAll('.line-reveal').forEach(x => lio.observe(x));
+
+        /* Footer: live local clock */
+        const clockEl = document.getElementById('footerClock');
+        if (clockEl) {
+            const tick = () => {
+                const d = new Date();
+                clockEl.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' local';
+            };
+            tick();
+            setInterval(tick, 30000);
+        }
+
+        /* Footer: subtle wordmark parallax while the reveal is happening */
+        const wordmark = document.querySelector('[data-footer-parallax]'), footerEl = document.querySelector('.eatwise-footer');
+        if (wordmark && footerEl && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            addEventListener('scroll', () => {
+                let r = footerEl.getBoundingClientRect(),
+                    p = Math.min(Math.max(1 - r.top / innerHeight, 0), 1);
+                wordmark.style.transform = `translateY(${(1 - p) * 40}px)`;
+            });
+        }
+
+        // Взимаме елементите от HTML
+        const cityInputField = document.getElementById('cityInput');
+        const resultsContainer = document.getElementById('results');
+        const searchForm = document.getElementById('cityForm');
+
+        // Слушаме за въвеждане на текст
+        cityInputField.addEventListener('input', function () {
+            const val = this.value.trim().toLowerCase();
+            resultsContainer.innerHTML = '';
+
+            if (!val) return;
+
+            // bulgarianCities идва от cities.js
+            const filteredCities = bulgarianCities.filter(city =>
+                city.toLowerCase().includes(val)
+            );
+
+            filteredCities.forEach(city => {
+                const div = document.createElement('div');
+                div.className = 'result-item';
+
+                const regex = new RegExp(`(${val})`, "gi");
+                div.innerHTML = city.replace(regex, "<strong>$1</strong>");
+
+                div.addEventListener('click', function () {
+                    cityInputField.value = city;
+                    resultsContainer.innerHTML = '';
+                    submitSearch(city);
+                });
+                resultsContainer.appendChild(div);
+            });
+        });
+
+        // Скриване при клик извън формата
+        document.addEventListener('click', function (e) {
+            if (!searchForm.contains(e.target)) {
+                resultsContainer.innerHTML = '';
+            }
+        });
+
+        // Обработка на натискане на "Търси" или Enter
+        searchForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const city = cityInputField.value.trim();
+            if (city) {
+                submitSearch(city);
+            }
+        });
+
+        // Пренасочване
+        function submitSearch(city) {
+            const encodedCity = encodeURIComponent(city);
+            window.location.href = `city_search.html?city=${encodedCity}`;
+        }
+
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('main-nav');
+
+        window.addEventListener('scroll', function () {
+            // Взимаме текущата позиция на скролване
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Проверяваме дали сме скролнали повече от 50px (за да не изчезва веднага на върха)
+            if (scrollTop > 50) {
+                if (scrollTop > lastScrollTop) {
+                    // Ако скролваме НАДОЛУ -> скриваме менюто
+                    navbar.classList.add('nav-hidden');
+                } else {
+                    // Ако скролваме НАГОРЕ -> показваме менюто
+                    navbar.classList.remove('nav-hidden');
+                }
+            } else {
+                // Ако сме най-отгоре на страницата, винаги го показваме
+                navbar.classList.remove('nav-hidden');
+            }
+
+            // Обновяваме последната позиция (предпазва от отрицателни стойности в Safari)
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollTopBtn = document.getElementById('scrollToTopBtn');
+            const targetSection = document.getElementById('impact-section');
+
+            if (scrollTopBtn && targetSection) {
+                window.addEventListener('scroll', () => {
+                    // Изчисляваме края на секцията
+                    const sectionBottom = targetSection.offsetTop + targetSection.offsetHeight;
+
+                    // Бутонът се показва едва когато подминем изцяло секцията
+                    if (window.scrollY > sectionBottom) {
+                        scrollTopBtn.classList.add('show');
+                    } else {
+                        scrollTopBtn.classList.remove('show');
+                    }
+                });
+
+                scrollTopBtn.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+
+    async function fetchAndRenderOffers(query = '') {
+        try {
+            const response = await fetch(`http://localhost:5000/api/offers/search?q=${encodeURIComponent(query)}`);
+            const offers = await response.json();
+
+            searchResults.innerHTML = '';
+
+            if (offers.length === 0) {
+                searchResults.innerHTML = `<p class="no-results">Няма намерени активни оферти.</p>`;
+                return;
+            }
+
+            offers.forEach(offer => {
+                const card = document.createElement('div');
+                card.className = 'offer-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="city-badge">📍 ${offer.city}</span>
+                        <span class="category-badge">${offer.category}</span>
+                    </div>
+                    <h3>${offer.business_name}</h3>
+                    <h4>${offer.title}</h4>
+                    <p class="address">🏠 ${offer.address}</p>
+                    <p class="pickup">⏰ Час за вземане: ${offer.pickup_start} - ${offer.pickup_end}</p>
+                    <p class="stock">📦 Остават: ${offer.quantity} бр.</p>
+                    <div class="price-container">
+                        <span class="old-price">${offer.original_price} лв</span>
+                        <span class="new-price">${offer.discount_price} лв</span>
+                    </div>
+                `;
+                searchResults.appendChild(card);
+            });
+        } catch (error) {
+            console.error("Грешка при зареждане на офертите:", error);
+        }
+    }
+
+    // Търсене в реално време
+    let debounceTimer;
+    searchInput?.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchAndRenderOffers(e.target.value);
+        }, 300);
+    });
+
+    // Първоначално зареждане
+    fetchAndRenderOffers();
+});
+    </script>
+    <script src="Search/cities.js"></script>
+    <script src="Search/search.js"></script>
+    <script src="Popup/modal.js"></script>
+    <script src="/loader.js"></script>
+<script src="/tracker.js"></script>
+    <button id="scrollToTopBtn" title="Към началото" aria-label="Към началото">
+        ↑
+    </button>
+</body>
+
+</html>

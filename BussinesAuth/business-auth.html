@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EatWise за Бизнеса - Вход и Регистрация</title>
+    <link rel="stylesheet" href="auth.css">
+    <!-- Leaflet CSS & JS за интерактивна карта -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <div class="auth-container">
+        <!-- Лява част: Parallax с лого и копирайт -->
+        <div class="auth-visual" id="parallax-container">
+            <div class="parallax-bg-wrapper parallax-layer" data-speed="-0.8">
+                <img src="../assets/bakery-bg.jpg" alt="EatWise Bakery" class="parallax-bg-img">
+            </div>
+
+            <div class="parallax-header">
+                <img src="../assets/logo.png" alt="EatWise Logo" class="parallax-logo">
+            </div>
+
+            <div class="parallax-footer">
+                <span>&copy; Eatwise</span>
+            </div>
+        </div>
+
+        <!-- Дясна част: Формите -->
+        <div class="auth-form-side">
+            <div class="form-wrapper">
+
+                <!-- ТАБОВЕ ЗА ПРЕВКЛЮЧВАНЕ -->
+                <div class="auth-tabs">
+                    <button class="tab-btn active" id="tab-login" type="button">Вход</button>
+                    <button class="tab-btn" id="tab-register" type="button">Регистрация</button>
+                </div>
+
+                <!-- 1. ФОРМА ЗА ВХОД (LOGIN FORM - ВИДИМА ПО ПОДРАЗБИРАНЕ) -->
+                <form id="login-form" class="auth-form active" style="display: block;">
+                    <h2>Вход за партньори</h2>
+                    <p class="form-subtitle">Влезте в своя профил</p>
+
+                    <!-- 🔴 СТИЛИЗИРАНО ЧЕРВЕНО СЪОБЩЕНИЕ ЗА ГРЕШКА (ОТХВЪРЛЕН / ЧАКАЩ / ГРЕШНА ПАРОЛА) -->
+                    <div id="login-error"
+                        style="display: none; background-color: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 500; margin-bottom: 16px; line-height: 1.4; text-align: left;">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="login-email">Служебен имейл *</label>
+                        <input type="email" id="login-email" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="login-password">Парола *</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="primary-btn" style="margin-top: 10px;">Вход</button>
+                    <p class="login-redirect-text">
+                        Нямате акаунт? <a href="#" class="switch-to-register">Регистрирайте се</a>
+                    </p>
+                </form>
+
+                <!-- 2. ФОРМА ЗА РЕГИСТРАЦИЯ (СКРИТА ПО ПОДРАЗБИРАНЕ) -->
+                <form id="register-form" class="auth-form" style="display: none;" novalidate>
+
+                    <!-- СТЪПКА 1: Основни данни -->
+                    <div id="register-step-1">
+                        <h2>Станете партньор</h2>
+                        <p class="form-subtitle">Стъпка 1: Вашите данни</p>
+
+                        <div class="input-group">
+                            <label for="regEmail">Служебен Имейл *</label>
+                            <input type="email" id="regEmail" placeholder="contact@gmail.com" required>
+
+                            <!-- Грешка за невалиден формат -->
+                            <span id="emailError"
+                                style="display: none; color: #ef4444; font-size: 0.85rem; margin-top: 6px;">
+                                Моля, използвайте валиден имейл (напр. gmail.com, abv.bg, mail.bg).
+                            </span>
+
+                            <!-- 🔴 ГРЕШКА ЗА ВЕЧЕ РЕГИСТРИРАН ИМЕЙЛ -->
+                            <span id="emailExistsError"
+                                style="display: none; color: #ef4444; font-size: 0.85rem; margin-top: 6px;">
+                                Вече съществува акаунт с този имейл. <a href="#" class="switch-to-login"
+                                    style="color: #10b981; font-weight: 600; text-decoration: underline; margin-left: 4px;">Влез
+                                    тук →</a>
+                            </span>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="regPassword">Парола *</label>
+                            <div style="position: relative;">
+                                <input type="password" id="regPassword" placeholder="••••••••" required
+                                    style="padding-right: 45px;">
+                                <button type="button" id="togglePassword" class="toggle-pass-btn"
+                                    aria-label="Покажи парола">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="terms-group" id="termsContainer">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="regTerms">
+                                <span class="checkmark"></span>
+                                <span class="terms-text">
+                                    Продължавайки, се съгласявате с нашата
+                                    <a href="Terms and privacy/privacy-policy.html" target="_blank">Политика за
+                                        поверителност</a> и
+                                    <a href="Terms and privacy/terms-and-conditions.html" target="_blank">Условия за
+                                        ползване</a>.
+                                </span>
+                            </label>
+                        </div>
+
+                        <button type="button" id="btn-next-step" class="primary-btn">Продължи</button>
+                        <p class="login-redirect-text">
+                            Вече имаш акаунт? <a href="#" class="switch-to-login">Влез</a>
+                        </p>
+                    </div>
+
+                    <!-- СТЪПКА 2: Избор/Въвеждане на заведение и Телефон -->
+                    <div id="step-2" style="display: none;">
+                        <button type="button" id="back-to-step-1" class="back-link">← Назад</button>
+
+                        <h2>Заведение и Контакти</h2>
+                        <p class="form-subtitle">Стъпка 2: Намерете или въведете вашия обект</p>
+
+                        <!-- 1. СТАНДАРТНО ТЪРСЕНЕ -->
+                        <div id="searchSection">
+                            <div class="input-group">
+                                <label for="venue-search">Търсене на заведение *</label>
+                                <input type="text" id="venue-search" placeholder="Започнете да пишете името...">
+
+                                <div id="venueSearchError"
+                                    style="display: none; color: #ef4444; font-size: 12px; margin-top: 5px; font-weight: 500;">
+                                    Моля, потърсете и изберете име на заведението.
+                                </div>
+                            </div>
+                        </div>
+
+                        <p id="manualEntryLink"
+                            style="font-size: 13px; color: #10b981; cursor: pointer; text-decoration: underline; margin: 10px 0; font-weight: 600;">
+                            Не намирате заведението си? Въведете го ръчно.
+                        </p>
+
+                        <!-- 2. РЪЧНО ВЪВЕЖДАНЕ -->
+                        <div id="manualSection" style="display: none;">
+                            <div class="input-group">
+                                <label for="reg-business-name">Име на заведението *</label>
+                                <input type="text" id="reg-business-name" placeholder="напр. Ресторант 'Европа'">
+
+                                <div id="venueManualError"
+                                    style="display: none; color: #ef4444; font-size: 12px; margin-top: 5px; font-weight: 500;">
+                                    Моля, въведете име на заведението.
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="reg-address">Адрес</label>
+                                <input type="text" id="reg-address" placeholder="гр. София, ул. ...">
+                            </div>
+
+                            <div class="input-group" style="margin-top: 12px;">
+                                <label>Посочете точното място на картата:</label>
+                                <div id="venue-map"
+                                    style="height: 200px; width: 100%; border-radius: 12px; border: 1px solid #cbd5e1; margin-top: 4px; z-index: 1;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ТЕЛЕФОН -->
+                        <div class="input-group" style="margin-top: 15px;">
+                            <label for="phone">Телефон за връзка *</label>
+                            <input type="tel" id="phone" placeholder="08XXXXXXXX" maxlength="10" required>
+                            <div id="phoneError"
+                                style="display: none; color: #ef4444; font-size: 12px; margin-top: 5px; font-weight: 500;">
+                                Моля, въведете валиден телефонен номер (до 10 цифри, започващ с 0).
+                            </div>
+                        </div>
+
+                        <button type="button" id="btn-next-step-2" class="primary-btn"
+                            style="margin-top: 20px;">Продължи</button>
+                    </div>
+
+                    <!-- СТЪПКА 3: Категория -->
+                    <div id="register-step-3" style="display: none;">
+                        <button type="button" id="btn-prev-step-2" class="back-link">← Назад</button>
+                        <h2>Вид на заведението</h2>
+                        <p class="form-subtitle">Стъпка 3: Изберете категорията на вашия обект</p>
+
+                        <div class="category-grid">
+                            <label class="category-card">
+                                <input type="radio" name="businessType" value="Ресторант">
+                                <div class="card-content">
+                                    <span class="icon">🍽️</span>
+                                    <span class="label">Ресторант</span>
+                                </div>
+                            </label>
+                            <label class="category-card">
+                                <input type="radio" name="businessType" value="Пекарна">
+                                <div class="card-content">
+                                    <span class="icon">🥖</span>
+                                    <span class="label">Пекарна</span>
+                                </div>
+                            </label>
+                            <label class="category-card">
+                                <input type="radio" name="businessType" value="Баничарница">
+                                <div class="card-content">
+                                    <span class="icon">🥐</span>
+                                    <span class="label">Баничарница</span>
+                                </div>
+                            </label>
+                            <label class="category-card">
+                                <input type="radio" name="businessType" value="Сладкарница">
+                                <div class="card-content">
+                                    <span class="icon">🍰</span>
+                                    <span class="label">Сладкарница</span>
+                                </div>
+                            </label>
+                            <label class="category-card">
+                                <input type="radio" name="businessType" value="Кафене / Бистро">
+                                <div class="card-content">
+                                    <span class="icon">☕</span>
+                                    <span class="label">Кафене / Бистро</span>
+                                </div>
+                            </label>
+                            <label class="category-card">
+                                <input type="radio" name="businessType" value="Бар / Клуб">
+                                <div class="card-content">
+                                    <span class="icon">🍸</span>
+                                    <span class="label">Бар / Клуб</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <span id="categoryError"
+                            style="display: none; color: #ef4444; font-size: 0.85rem; margin-top: 10px;">
+                            Моля, изберете категория.
+                        </span>
+
+                        <button type="button" id="btn-next-step-3" class="primary-btn"
+                            style="margin-top: 20px;">Продължи</button>
+                    </div>
+
+                    <!-- СТЪПКА 4: Потвърждение и карта -->
+                    <div id="register-step-4" style="display: none;">
+                        <button type="button" id="btn-prev-step-3" class="back-link">← Назад</button>
+                        <h2>Потвърждение на данните</h2>
+                        <p class="form-subtitle">Стъпка 4: Прегледайте въведената информация</p>
+
+                        <div id="register-error-box"
+                            style="display: none; background-color: #fef2f2; border: 1px solid #fca5a5; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.08);">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 22px;">⚠️</span>
+                                <div>
+                                    <strong style="color: #991b1b; display: block; font-size: 14px;">Вече съществува
+                                        такъв профил!</strong>
+                                    <span id="register-error-text" style="color: #b91c1c; font-size: 13px;">Този бизнес
+                                        вече е регистриран. Моля, влезте в профила си.</span>
+                                </div>
+                            </div>
+                            <button type="button" class="switch-to-login"
+                                style="background-color: #ef4444; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 12px; white-space: nowrap; transition: background 0.2s ease;">
+                                Влез тук →
+                            </button>
+                        </div>
+
+                        <!-- Обобщение на данните -->
+                        <div class="summary-card">
+                            <div class="summary-item">
+                                <span class="summary-label">Имейл:</span>
+                                <span class="summary-value" id="summary-email">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Име на обекта:</span>
+                                <span class="summary-value" id="summary-name">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Телефон:</span>
+                                <span class="summary-value" id="summary-phone">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Адрес:</span>
+                                <span class="summary-value" id="summary-address">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Категория:</span>
+                                <span class="summary-value" id="summary-category">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Контейнер за картата -->
+                        <div class="map-wrapper" style="margin-top: 15px;">
+                            <label class="map-label">Локация на обекта:</label>
+                            <div id="map-preview">
+                                <iframe id="google-map-iframe" width="100%" height="180"
+                                    style="border:0; border-radius: 12px;" loading="lazy" src=""></iframe>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btn-finish-register" class="primary-btn"
+                            style="margin-top: 20px;">Потвърди и завърши</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+
+</html>

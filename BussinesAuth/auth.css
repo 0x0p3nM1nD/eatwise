@@ -1,0 +1,867 @@
+/* --- Глобални стилове --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: #ffffff;
+    color: #0f172a;
+    overflow: hidden;
+    /* Премахва скрола, тъй като всичко е на 1 екран */
+}
+
+.auth-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* =========================================
+   ЛЯВА ЧАСТ: Parallax с Лого и Копирайт
+========================================= */
+.auth-visual {
+    flex: 0 0 35%; /* 35% ширина на панела */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Поставя логото горе, а копирайта долу */
+    padding: 32px 28px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: #0f172a;
+}
+
+/* --- Слой със снимката --- */
+.parallax-bg-wrapper {
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    right: -30px;
+    bottom: -30px;
+    z-index: 1;
+}
+
+.parallax-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* --- 1. Лого горе вляво --- */
+.parallax-header {
+    position: relative;
+    z-index: 10; /* Стои пред снимката */
+    align-self: flex-start;
+}
+
+.parallax-logo {
+    height: 50px; /* Малък и елегантен размер */
+    width: auto;
+    display: block;
+    /* Сянка за добра видимост върху фоновата снимка */
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* --- 2. Копирайт долу вляво --- */
+.parallax-footer {
+    position: relative;
+    z-index: 10; /* Стои пред снимката */
+    align-self: flex-start;
+    color: #ffffff;
+    font-size: 1.10rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+    /* Сянка за гарантирана четимост */
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* Респонсив за мобилни устройства */
+@media (max-width: 900px) {
+    .auth-visual {
+        display: none;
+    }
+}
+/* =========================================
+   ДЯСНА ЧАСТ: Форми
+========================================= */
+.auth-form-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    position: relative;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+}
+
+.back-link {
+    display: inline-block;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 40px;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #0f172a;
+}
+
+/* --- Табове (Вход / Регистрация) --- */
+.auth-tabs {
+    display: flex;
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 40px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Скриване/Показване на формите --- */
+.auth-form {
+    display: none;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-form h2 {
+    margin: 0 0 8px;
+    font-size: 1.8rem;
+}
+
+.form-subtitle {
+    color: #64748b;
+    margin: 0 0 32px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+    /* Добавено заради падащото меню от предната стъпка */
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+
+
+    color: #000000;
+    /* Можеш да използваш и #0f172a за много тъмно синьо-черно */
+
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    background: #f8fafc;
+}
+
+/* Това оцветява самия "placeholder" (подсказката в полето, напр. "contact@roma.bg") 
+   в светлосиво, за да се отличава ясно от текста, който потребителят реално въвежда. */
+.input-group input::placeholder {
+    color: #94a3b8;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #4ade80;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.1);
+}
+
+.forgot-pass {
+    text-align: right;
+    margin-bottom: 24px;
+}
+
+.forgot-pass a {
+    color: #4ade80;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.forgot-pass a:hover {
+    text-decoration: underline;
+}
+
+/* --- Главен Бутон --- */
+.primary-btn {
+    width: 100%;
+    padding: 16px;
+    background: #0f172a;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15);
+}
+
+/* --- Респонсив (За мобилни телефони) --- */
+@media (max-width: 900px) {
+    .auth-visual {
+        display: none;
+    }
+
+    /* Скриваме паралакса на малки екрани */
+    body {
+        overflow: auto;
+    }
+}
+
+.terms-group {
+    margin-bottom: 24px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+}
+
+/* Скриваме оригиналния чекбокс на браузъра */
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Създаваме наш собствен квадрат */
+.checkmark {
+    min-width: 20px;
+    height: 20px;
+    background-color: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+/* Когато мишката е върху чекбокса */
+.checkbox-container:hover input~.checkmark {
+    border-color: #4ade80;
+}
+
+/* Когато чекбоксът е избран */
+.checkbox-container input:checked~.checkmark {
+    background-color: #4ade80;
+    border-color: #4ade80;
+}
+
+/* Създаваме "тикчето" (скрито по подразбиране) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Показваме "тикчето" само когато е избран */
+.checkbox-container input:checked~.checkmark:after {
+    display: block;
+}
+
+/* Стилизиране на "тикчето" */
+.checkbox-container .checkmark:after {
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px;
+}
+
+.terms-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.terms-text a {
+    color: #4ade80;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.terms-text a:hover {
+    text-decoration: underline;
+}
+
+/* Уверява се, че падащото меню на Google Maps е винаги най-отгоре */
+.pac-container {
+    z-index: 10000 !important;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.pac-item {
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.pac-item:hover {
+    background-color: #f8fafc;
+}
+
+.form-hint {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+    display: block;
+}
+
+.selected-place-box {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background-color: #ecfdf5;
+    border: 1px solid #10b981;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #065f46;
+}
+
+.selected-place-box .place-address {
+    font-size: 13px;
+    color: #047857;
+    margin-top: 2px;
+}
+
+/* --- Стил за резултатите от LocationIQ --- */
+.auth-autocomplete-results {
+    position: absolute;
+    top: 100%; /* Залепва го точно под полето за име */
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.auth-autocomplete-item {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #334155;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.2s;
+    line-height: 1.4;
+}
+
+.auth-autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.auth-autocomplete-item:hover {
+    background-color: #f8fafc;
+    color: #4ade80;
+    /* Зеленото на EatWise */
+}
+
+/* --- Бутон "Око" за паролата --- */
+.toggle-pass-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.toggle-pass-btn:hover {
+    color: #0f172a;
+}
+
+/* Когато окото е активно (паролата се вижда) */
+.toggle-pass-btn.active {
+    color: #4ade80;
+}
+
+/* --- Червено състояние при неприети условия --- */
+.terms-group.error .terms-text {
+    color: #ef4444;
+    /* Червен текст */
+}
+
+.terms-group.error .checkmark {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+    /* Леко червен фон на квадратчето */
+}
+
+.back-to-login-wrapper {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-link-btn {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-link-btn:hover {
+    color: #0f172a;
+}
+
+/* Икона за потвърждение при успешно изпратен имейл */
+.success-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(74, 222, 128, 0.15);
+    color: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0 auto 20px auto;
+}
+
+
+.back-to-login-wrapper {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.back-link-btn {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-link-btn:hover {
+    color: #0f172a;
+}
+
+.success-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(74, 222, 128, 0.15);
+    color: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0 auto 20px auto;
+}
+
+/* --- Стилизиране на долния линк (Footer на формата) --- */
+.form-footer {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.form-footer p {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.link-highlight {
+    color: #10b981; /* EatWise зелено */
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+    transition: color 0.2s ease;
+}
+
+.link-highlight:hover {
+    color: #059669;
+    text-decoration: underline;
+}
+
+/* Стил за бутона Продължи */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: #10b981;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #059669;
+}
+
+.btn-primary:active {
+    transform: scale(0.99);
+}
+
+
+/* Контейнерът за търсене на заведение */
+.form-group-search {
+    position: relative;
+    margin-bottom: 24px; /* Допълнително разстояние отдолу */
+}
+
+/* Входното поле (Input) */
+.form-group-search input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group-search input:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+/* Бутонът/Линкът "Не намирате заведението си? Въведете го ръчно" */
+.btn-manual-entry {
+    display: inline-block;
+    margin-top: 14px; /* Отстояние от input полето над него */
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #10b981; /* EatWise Зелено */
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+}
+
+.btn-manual-entry:hover {
+    color: #059669;
+}
+
+
+/* Мрежа за избор на категории (Стъпка 3) */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.category-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.category-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.category-card .card-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.category-card:hover .card-content {
+    border-color: #cbd5e1;
+}
+
+/* Активно състояние при избор */
+.category-card input[type="radio"]:checked + .card-content {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.category-card .icon {
+    font-size: 1.2rem;
+}
+
+.category-card .label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+
+/* Стил за бутоните Назад (включително Назад към сайта) */
+.btn-back-site {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #475569;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 20px;
+}
+
+.btn-back-site:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+/* Стил за текста "Вече имаш акаунт? Влез" */
+.login-redirect-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-top: 16px;
+}
+
+.login-redirect-text a {
+    color: #10b981;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.login-redirect-text a:hover {
+    text-decoration: underline;
+}
+
+/* Мрежа за категориите (Стъпка 3) */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.category-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.category-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.category-card .card-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.category-card:hover .card-content {
+    border-color: #cbd5e1;
+}
+
+.category-card input[type="radio"]:checked + .card-content {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+}
+
+.category-card .icon {
+    font-size: 1.1rem;
+}
+
+.category-card .label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.manual-link {
+    font-size: 13px;
+    color: #64748b;
+    cursor: pointer;
+    margin-top: 12px;
+    margin-bottom: 20px;
+    text-decoration: underline;
+    display: inline-block;
+}
+
+.error-msg {
+    color: #ef4444;
+    font-size: 0.85rem;
+}
+
+.login-redirect-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-top: 16px;
+}
+
+.login-redirect-text a {
+    color: #10b981;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.login-redirect-text a:hover {
+    text-decoration: underline;
+}
+
+button.back-link {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+
+/* Стъпка 4: Карта и обобщение */
+.summary-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.summary-label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.summary-value {
+    color: #0f172a;
+    font-weight: 600;
+    text-align: right;
+}
+
+.map-wrapper {
+    margin-top: 16px;
+}
+
+.map-label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 8px;
+}
+
+#map-preview {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    background-color: #e2e8f0;
+}

@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EatWise — Храна във Велинград</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --green:#005250;
+  --green2:#00615f;
+  --mint:#67d695;
+  --cream:#f9f3f0;
+  --text:#252d2d;
+  --muted:#6b7777;
+  --border:#dfe5e3;
+  --white:#fff;
+  --coral:#ff7973;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,Arial,sans-serif;color:var(--text);background:var(--cream)}
+button,input{font:inherit}
+a{text-decoration:none;color:inherit}
+
+.header{
+  height:76px;background:#fff;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 34px;
+  position:sticky;top:0;z-index:20
+}
+.logo{font-size:25px;font-weight:800;color:var(--green);letter-spacing:-1px}
+.logo span{color:var(--mint)}
+.header-actions{display:flex;align-items:center;gap:12px}
+.search{
+  width:330px;height:46px;background:#f5f7f6;border:1px solid var(--border);
+  border-radius:999px;display:flex;align-items:center;padding:0 16px;gap:10px
+}
+.search input{border:0;outline:0;background:transparent;width:100%;color:var(--text)}
+.city-pill{border:1px solid var(--green);color:var(--green);padding:11px 16px;border-radius:999px;font-weight:600}
+
+.page{max-width:1380px;margin:auto;padding:38px 28px 70px}
+.topline{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:24px}
+.eyebrow{color:var(--green2);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+h1{font-size:42px;line-height:1.05;margin:7px 0 0;letter-spacing:-1.8px;color:var(--green)}
+.subtitle{color:var(--muted);margin:10px 0 0;font-size:16px}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0}
+.filter{background:#fff;border:1px solid var(--border);padding:10px 15px;border-radius:999px;cursor:pointer;color:#435050}
+.filter.active{background:var(--green);border-color:var(--green);color:#fff}
+
+.layout{display:grid;grid-template-columns:minmax(360px,520px) 1fr;gap:24px;align-items:start}
+.results{display:flex;flex-direction:column;gap:14px}
+.result-count{font-weight:700;margin:0 0 2px;color:var(--green)}
+.card{
+  background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;
+  display:grid;grid-template-columns:145px 1fr;min-height:170px;
+  transition:.2s ease;cursor:pointer
+}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,82,80,.10);border-color:#b9ccc8}
+.card-image{background:linear-gradient(135deg,#d9eee4,#f1d7cf);display:flex;align-items:center;justify-content:center;font-size:55px}
+.card-body{padding:17px 18px;display:flex;flex-direction:column}
+.card-category{font-size:12px;color:var(--muted);margin-bottom:6px}
+.card-title{font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px}
+.card-desc{font-size:13px;color:var(--muted);line-height:1.45}
+.card-bottom{margin-top:auto;display:flex;align-items:end;justify-content:space-between;gap:10px}
+.price strong{font-size:19px;color:var(--text)}
+.old{font-size:12px;text-decoration:line-through;color:#9aa3a3;margin-left:4px}
+.distance{font-size:12px;color:var(--muted)}
+.badge{display:inline-flex;align-self:flex-start;margin-top:8px;padding:5px 8px;border-radius:7px;background:#e7f7ed;color:#167149;font-size:11px;font-weight:700}
+
+.map-wrap{
+  position:sticky;top:100px;height:calc(100vh - 125px);min-height:600px;
+  border-radius:24px;overflow:hidden;border:1px solid var(--border);background:#dce8e4;
+  box-shadow:0 12px 40px rgba(37,45,45,.08)
+}
+.map{
+  width:100%;height:100%;position:relative;
+  background:
+    linear-gradient(32deg,transparent 48%,rgba(255,255,255,.9) 49%,rgba(255,255,255,.9) 51%,transparent 52%) 0 0/230px 180px,
+    linear-gradient(118deg,transparent 48%,rgba(255,255,255,.8) 49%,rgba(255,255,255,.8) 51%,transparent 52%) 80px 30px/260px 210px,
+    #d7e5df;
+}
+.map:before{content:"";position:absolute;inset:0;background:
+  radial-gradient(ellipse at 25% 30%,rgba(103,214,149,.35),transparent 24%),
+  radial-gradient(ellipse at 78% 68%,rgba(0,97,95,.12),transparent 25%);
+}
+.road{position:absolute;background:rgba(255,255,255,.72);height:14px;border-radius:20px;transform:rotate(-18deg);left:-10%;right:-10%;top:45%}
+.road.r2{top:63%;height:9px;transform:rotate(12deg)}
+.pin{
+  position:absolute;width:44px;height:44px;border-radius:50% 50% 50% 0;
+  transform:rotate(-45deg);background:var(--green);box-shadow:0 7px 15px rgba(0,82,80,.25);
+  display:flex;align-items:center;justify-content:center
+}
+.pin span{transform:rotate(45deg);color:#fff;font-size:20px}
+.p1{left:27%;top:29%}.p2{left:63%;top:39%}.p3{left:48%;top:67%}.p4{left:76%;top:70%}
+.map-label{position:absolute;background:#fff;border-radius:10px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--green);box-shadow:0 4px 15px rgba(0,0,0,.1)}
+.l1{left:20%;top:23%}.l2{left:57%;top:33%}.l3{left:40%;top:61%}
+.map-city{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:24px;font-weight:800;color:rgba(0,82,80,.25);letter-spacing:.5px}
+
+.empty{padding:35px;background:#fff;border:1px solid var(--border);border-radius:20px;color:var(--muted);text-align:center}
+
+@media(max-width:900px){
+  .header{padding:0 16px}.search{width:210px}
+  .page{padding:28px 16px 45px}
+  .layout{grid-template-columns:1fr}
+  .map-wrap{position:relative;top:auto;height:420px;min-height:420px;order:-1}
+  .topline{align-items:start;flex-direction:column}
+}
+@media(max-width:600px){
+  .header{height:auto;padding:13px 14px;gap:10px;flex-wrap:wrap}
+  .logo{font-size:22px}.header-actions{width:100%}.search{flex:1;width:auto}
+  .city-pill{padding:9px 12px}
+  h1{font-size:34px}
+  .card{grid-template-columns:105px 1fr;min-height:150px}
+  .card-image{font-size:42px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="../index.html">Eat<span>Wise</span></a>
+  <div class="header-actions">
+    <label class="search" aria-label="Търсене по град">
+      <span>⌕</span>
+      <input id="citySearch" value="Велинград" placeholder="Въведи град..." autocomplete="off">
+    </label>
+    <a class="city-pill" href="../index.html">← Начало</a>
+  </div>
+</header>
+
+<main class="page">
+  <section class="topline">
+    <div>
+      <div class="eyebrow">Добра храна. По-малко отпадъци.</div>
+      <h1>Храна във Велинград</h1>
+      <p class="subtitle">Открий предложения от местни ресторанти, пекарни и магазини.</p>
+    </div>
+  </section>
+
+  <nav class="filters">
+    <button class="filter active">Всички</button>
+    <button class="filter">Ресторанти</button>
+    <button class="filter">Пекарни</button>
+    <button class="filter">Кафенета</button>
+    <button class="filter">Магазини</button>
+    <button class="filter">До 10 лв.</button>
+  </nav>
+
+  <section class="layout">
+    <div class="results">
+      <div class="result-count">6 предложения наблизо</div>
+
+      <article class="card">
+        <div class="card-image">🥐</div>
+        <div class="card-body">
+          <div class="card-category">ПЕКАРНА</div>
+          <div class="card-title">Пакет с втори шанс</div>
+          <div class="card-desc">Подбрани печива и вкусни изненади от края на деня.</div>
+          <div class="card-bottom">
+            <div class="price"><strong>6.99 лв.</strong><span class="old">18 лв.</span></div>
+            <div class="distance">0.8 км</div>
+          </div>
+          <span class="badge">Остават 3</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">🍕</div>
+        <div class="card-body">
+          <div class="card-category">РЕСТОРАНТ</div>
+          <div class="card-title">Вкусна изненада</div>
+          <div class="card-desc">Комбинация от готови ястия, които заслужават да бъдат изядени.</div>
+          <div class="card-bottom">
+            <div class="price"><strong>8.99 лв.</strong><span class="old">24 лв.</span></div>
+            <div class="distance">1.2 км</div>
+          </div>
+          <span class="badge">Остават 2</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">☕</div>
+        <div class="card-body">
+          <div class="card-category">КАФЕНЕ</div>
+          <div class="card-title">Кафе &amp; сладко</div>
+          <div class="card-desc">Сладки изкушения и печива за края на деня.</div>
+          <div class="card-bottom">
+            <div class="price"><strong>5.49 лв.</strong><span class="old">14 лв.</span></div>
+            <div class="distance">1.6 км</div>
+          </div>
+          <span class="badge">Остават 5</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">🥗</div>
+        <div class="card-body">
+          <div class="card-category">РЕСТОРАНТ</div>
+          <div class="card-title">Fresh пакет</div>
+          <div class="card-desc">Свежи салати и готови ястия с по-ниска цена.</div>
+          <div class="card-bottom">
+            <div class="price"><strong>7.49 лв.</strong><span class="old">19 лв.</span></div>
+            <div class="distance">2.1 км</div>
+          </div>
+          <span class="badge">Остават 4</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="map-wrap">
+      <div class="map" aria-label="Карта на предложенията">
+        <div class="map-city">ВЕЛИНГРАД</div>
+        <div class="road"></div><div class="road r2"></div>
+        <div class="pin p1"><span>🥐</span></div>
+        <div class="pin p2"><span>🍕</span></div>
+        <div class="pin p3"><span>☕</span></div>
+        <div class="pin p4"><span>🥗</span></div>
+        <div class="map-label l1">Пекарна</div>
+        <div class="map-label l2">Ресторант</div>
+        <div class="map-label l3">Кафене</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const input = document.getElementById('citySearch');
+input.addEventListener('keydown', e => {
+  if(e.key === 'Enter' && input.value.trim()){
+    const city = encodeURIComponent(input.value.trim());
+    window.location.href = 'search.html?city=' + city;
+  }
+});
+
+document.querySelectorAll('.filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+
+<script src="tracker.js"></script>
+    <script src="loader.js"></script>
+</body>
+</html>

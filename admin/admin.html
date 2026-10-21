@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EatWise Admin - Мониторинг и Управление</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body style="background-color: #0f172a; margin: 0; padding: 0;">
+
+    <!-- 🔒 1. ИЗИСКВАНЕ НА ВХОД (ПОКАЗВА СЕ САМО АКО НЯМА СЕСИЯ) -->
+    <div id="admin-login-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0f172a; z-index: 99999; display: flex; align-items: center; justify-content: center; font-family: system-ui, -apple-system, sans-serif;">
+        <div style="background: #1e293b; padding: 40px; border-radius: 16px; width: 100%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); border: 1px solid #334155; color: white;">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 8px 0; color: #10b981;">EatWise Admin</h1>
+                <p style="color: #94a3b8; font-size: 14px; margin: 0;">Изисква се автентификация за достъп</p>
+            </div>
+
+            <form id="admin-login-form">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 6px;">Потребителско име</label>
+                    <input type="text" id="admin-username" required style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; outline: none; box-sizing: border-box; font-size: 14px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 13px; color: #cbd5e1; margin-bottom: 6px;">Парола</label>
+                    <input type="password" id="admin-password" required style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; outline: none; box-sizing: border-box; font-size: 14px;">
+                </div>
+
+                <div id="admin-login-error" style="display: none; color: #f87171; font-size: 13px; margin-bottom: 16px; text-align: center; font-weight: 500;">
+                    Грешно потребителско име или парола.
+                </div>
+
+                <button type="submit" id="admin-login-btn" style="width: 100%; padding: 12px; border: none; border-radius: 8px; background: #10b981; color: white; font-weight: bold; cursor: pointer; font-size: 14px;">
+                    Вход в системата
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 📊 2. СЪЩИНСКИ АДМИН ПАНЕЛ -->
+    <div class="admin-wrapper" id="admin-main-content" style="display: none;">
+        <!-- Шапка -->
+        <header class="admin-header">
+            <div class="brand">
+                <h2>EatWise <span>Admin Panel</span></h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="live-status">
+                    <span class="status-dot"></span>
+                    <span>Мониторинг на живо</span>
+                </div>
+                <!-- Бутон за Изход -->
+                <button id="admin-logout-btn" style="background: #ef4444; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px;">
+                    🚪 Изход
+                </button>
+            </div>
+        </header>
+
+        <!-- Метрики и Статистика -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🌐</div>
+                <div class="stat-data">
+                    <span class="stat-title">Уникални IP-та</span>
+                    <h3 id="stat-unique-ips">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👁️</div>
+                <div class="stat-data">
+                    <span class="stat-title">Общо прегледи</span>
+                    <h3 id="stat-total-visits">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏢</div>
+                <div class="stat-data">
+                    <span class="stat-title">Бизнеси</span>
+                    <h3 id="stat-businesses">0</h3>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🍱</div>
+                <div class="stat-data">
+                    <span class="stat-title">Активни / Общо оферти</span>
+                    <h3 id="stat-active-offers">0 / 0</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Таблица 1: Трафик и IP адреси -->
+        <section class="content-block">
+            <div class="block-header">
+                <h3>📍 Трафик и IP адреси в реално време (Последно 50)</h3>
+                <span class="refresh-badge">Автоматично обновяване на 5 сек.</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>IP Адрес</th>
+                            <th>Страница / Endpoint</th>
+                            <th>Време</th>
+                            <th>Браузър / User Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody id="visits-tbody">
+                        <tr><td colspan="4" class="loading-td">Зареждане на данни...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Таблица 2: Управление на регистрирани бизнеси -->
+        <section class="content-block">
+            <div class="block-header">
+                <h3>🏢 Регистрирани Партньори и Заведения</h3>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Име</th>
+                            <th>Категория</th>
+                            <th>Адрес</th>
+                            <th>Контакти</th>
+                            <th>Статус</th> <!-- 🟢 Променено от "Оферти" на "Статус" -->
+                            <th>Дата на рег.</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="businesses-tbody">
+                        <tr><td colspan="8" class="loading-td">Зареждане на бизнеси...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="admin.js"></script>
+    <script src="/loader.js"></script>
+    <script src="/tracker.js"></script>
+</body>
+</html>
